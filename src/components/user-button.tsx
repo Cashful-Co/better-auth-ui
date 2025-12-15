@@ -61,13 +61,16 @@ export interface UserButtonProps {
     alignOffset?: number
     side?: "top" | "right" | "bottom" | "left"
     sideOffset?: number
-    additionalLinks?: {
-        href: string
-        icon?: ReactNode
-        label: ReactNode
-        signedIn?: boolean
-        separator?: boolean
-    }[]
+    additionalLinks?: (
+        | {
+              href: string
+              icon?: ReactNode
+              label: ReactNode
+              signedIn?: boolean
+              separator?: boolean
+          }
+        | ReactNode
+    )[]
     trigger?: ReactNode
     disableDefaultLinks?: boolean
     /**
@@ -263,32 +266,52 @@ export function UserButton({
                     className={classNames?.content?.separator}
                 />
 
-                {additionalLinks?.map(
-                    ({ href, icon, label, signedIn, separator }, index) =>
-                        (signedIn === undefined ||
-                            (signedIn && !!sessionData) ||
-                            (!signedIn && !sessionData)) && (
-                            <Fragment key={index}>
-                                <Link href={href}>
-                                    <DropdownMenuItem
-                                        className={
-                                            classNames?.content?.menuItem
-                                        }
-                                    >
-                                        {icon}
-                                        {label}
-                                    </DropdownMenuItem>
-                                </Link>
-                                {separator && (
-                                    <DropdownMenuSeparator
-                                        className={
-                                            classNames?.content?.separator
-                                        }
-                                    />
-                                )}
-                            </Fragment>
+                {additionalLinks?.map((link, index) => {
+                    // Handle ReactNode directly
+                    if (
+                        !link ||
+                        typeof link !== "object" ||
+                        !("href" in link)
+                    ) {
+                        return (
+                            <DropdownMenuItem
+                                key={index}
+                                className={classNames?.content?.menuItem}
+                                asChild
+                            >
+                                {link}
+                            </DropdownMenuItem>
                         )
-                )}
+                    }
+
+                    const { href, icon, label, signedIn, separator } = link
+
+                    if (
+                        signedIn !== undefined &&
+                        ((signedIn && !sessionData) ||
+                            (!signedIn && sessionData))
+                    ) {
+                        return null
+                    }
+
+                    return (
+                        <Fragment key={index}>
+                            <Link href={href}>
+                                <DropdownMenuItem
+                                    className={classNames?.content?.menuItem}
+                                >
+                                    {icon}
+                                    {label}
+                                </DropdownMenuItem>
+                            </Link>
+                            {separator && (
+                                <DropdownMenuSeparator
+                                    className={classNames?.content?.separator}
+                                />
+                            )}
+                        </Fragment>
+                    )
+                })}
 
                 {!user || (user as User).isAnonymous ? (
                     <>
