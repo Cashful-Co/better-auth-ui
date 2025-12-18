@@ -36,7 +36,7 @@ export function UserTeamCell({
 
     localization = { ...contextLocalization, ...localization }
 
-    const { data: sessionData, refetch: _sessionRefetch } = useSession()
+    const { data: sessionData, refetch: refetchSession } = useSession()
     // @ts-expect-error
     const isCurrentTeam = team.id === sessionData?.session?.activeTeamId
 
@@ -53,7 +53,8 @@ export function UserTeamCell({
                 variant: "success",
                 message: localization.UPDATE_TEAM_SUCCESS
             })
-            refetch?.()
+            await refetchSession?.()
+            await refetch?.()
         } catch (error) {
             toast({
                 variant: "error",
