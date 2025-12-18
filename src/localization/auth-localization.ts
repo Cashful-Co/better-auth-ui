@@ -771,8 +771,8 @@ export const authLocalization = {
     /** @default "Manage your teams within your organization." */
     TEAMS_DESCRIPTION: "Manage your teams within your organization.",
 
-    /** @default "You are member for following teams." */
-    USER_TEAMS_DESCRIPTION: "You are member for following teams.",
+    /** @default "You are a member of the following teams." */
+    USER_TEAMS_DESCRIPTION: "You are a member of the following teams.",
 
     /** @default "Delete Team" */
     DELETE_TEAM: "Delete Team",
