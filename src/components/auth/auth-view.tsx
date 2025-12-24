@@ -222,6 +222,7 @@ export function AuthView({
                 )}
 
                 {view !== "RESET_PASSWORD" &&
+                    view !== "EMAIL_VERIFICATION" &&
                     (social?.providers?.length ||
                         genericOAuth?.providers?.length ||
                         (view === "SIGN_IN" && passkey)) && (
@@ -364,9 +365,15 @@ export function AuthView({
                                 "text-foreground underline",
                                 classNames?.footerLink
                             )}
-                            href={`${basePath}/${viewPaths[(view === "SIGN_IN" || view === "MAGIC_LINK" || view === "EMAIL_OTP") ? "SIGN_UP" : "SIGN_IN"]}${
-                                isHydrated ? window.location.search : ""
-                            }`}
+                            href={`${basePath}/${
+                                viewPaths[
+                                    view === "SIGN_IN" ||
+                                    view === "MAGIC_LINK" ||
+                                    view === "EMAIL_OTP"
+                                        ? "SIGN_UP"
+                                        : "SIGN_IN"
+                                ]
+                            }${isHydrated ? window.location.search : ""}`}
                         >
                             <Button
                                 variant="link"
