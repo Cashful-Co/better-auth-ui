@@ -149,7 +149,6 @@
     },
     "dependencies": {
         "@better-fetch/fetch": "^1.1.21",
-        "@hcaptcha/react-hcaptcha": "^1.17.1",
         "@noble/hashes": "^2.0.1",
         "@react-email/components": "^1.0.1",
         "@wojtekmaj/react-recaptcha-v3": "^0.1.4",
